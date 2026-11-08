@@ -36,7 +36,7 @@ outer:
 	for input.Scan() {
 		var ints []int
 		for _, s := range strings.Fields(input.Text()) {
-			x, err := strconv.ParseInt(s, 10, 64)
+			x, err := strconv.ParseInt(s, 10, strconv.IntSize)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				continue outer
