@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 )
 
 //!+
@@ -27,6 +28,10 @@ func fetch(url string) (filename string, n int64, err error) {
 	local := path.Base(resp.Request.URL.Path)
 	if local == "/" {
 		local = "index.html"
+	}
+	if local == "" || local == "." || local == ".." ||
+		strings.Contains(local, "/") || strings.Contains(local, "\\") || strings.Contains(local, "..") {
+		return "", 0, fmt.Errorf("invalid local filename derived from URL path: %q", local)
 	}
 	f, err := os.Create(local)
 	if err != nil {
